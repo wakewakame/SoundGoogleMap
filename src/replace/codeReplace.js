@@ -30,7 +30,9 @@ export const codeReplace = (responseText) => {
 		/(this\.\w+)\s*=\s*(new\s+_\.\w+\(\w+,void\s+0,\w+\.\w+\(\)\));/g,
 		"$1=$2;" +
 		"setInterval(" +
-		"()=>{if((new Date()).getTime()-window.renderChange.lastRenderTime>1000.0/window.renderChange.fps)$1." + renderFuncName + "();" +
+		"()=>{" +
+			"window.renderChange.update();" +
+			"if((new Date()).getTime()-window.renderChange.lastRenderTime>1000.0/window.renderChange.fps)$1." + renderFuncName + "();" +
 		"},1000.0/window.renderChange.fps);"
 	);
 

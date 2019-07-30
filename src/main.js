@@ -7,3 +7,6 @@ _.vva = function(XHRWrapper) {
 	// jsテキストを改変したものを返す
 	return codeReplace(responseText);
 };
+
+import { FftTextureGenerator } from "./fft/fft.js";
+window.FftTextureGenerator = FftTextureGenerator;

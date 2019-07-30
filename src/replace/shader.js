@@ -73,16 +73,27 @@ void main() {
 	float sa=t[int(floor(F.w*255.+.5))];
 	if(sa>0.) {
 		vec4 ta=vec4(floor(F.xyz*255.+.5),1);
+		#ifdef _a
+		vec4 ua=u*ta;
+		q=ua.xyz/6371010.;
+		#endif
+
+		// --------------------------------------------------------------------
+		float pi = acos(0.0) * 2.0;
+		float theta1 = atan(q.y, q.x) * 40000.0;
+		float theta2 = atan(q.z, sqrt(q.x * q.x + q.y * q.y)) * 40000.0;
+		theta1 = (theta1 + pi) / (2.0 * pi);
+		float pixIndex = (theta1 - floor(theta1));
+		ta.x += texture2D(orgTexture, vec2(pixIndex, 0.0)).r * 255.0;
+		// --------------------------------------------------------------------
+		
 		gl_Position=s*ta;
 		m=(floor(G*65535.+.5)+w.xy)*w.zw;
 		#ifdef _b
 		o=Ya(gl_Position.w);
 		#endif
 		p=sa;
-		#ifdef _a
-		vec4 ua=u*ta;
-		q=ua.xyz/6371010.;
-		#endif
+		
 		#ifdef _c
 		n=(u*vec4(floor(H*255.+.5)-ra,0)).xyz;
 		#endif
@@ -686,9 +697,11 @@ void main(){
 	vec3 col1 = vec3(1.0) - gl_FragColor.rgb;
 	vec3 col2 = gl_FragColor.rgb;
 
-	col1 = texture2D(orgTexture, vec2(0.5, 0.5)).rgb;
-
 	vec3 col = col1 * light + col2 * (1.0 - light);
+
+	float pi = acos(0.0) * 2.0;
+	col = 0.5 * col + 0.5 * texture2D(orgTexture, vec2((atan(q.y, q.x) + pi) / (2.0 * pi), 0.0)).rgb;
+
 	gl_FragColor=vec4(col, gl_FragColor.a);
 	#endif
 	// ---------------------------

@@ -37,6 +37,12 @@ export const RenderChange = class {
 		return source;
 	}
 
+	// GoogleMapに描画の再要求がされるタイミングで呼び出される
+	update() {
+		if (this.fftTextureGenerator)
+			this.fftTextureGenerator.update();
+	}
+
 	// GoogleMapの3Dの建物の描画中で、drawElementが始まる前に呼び出される。
 	setUniform(glContext, shaderProgram) {
 		// コンテキストが変更された場合
@@ -66,7 +72,7 @@ export const RenderChange = class {
 		// シェーダにテクスチャを送信
 		const textureUnit = 12;  // textureのunit番号
 		this.glContext.activeTexture(this.glContext["TEXTURE" + String(textureUnit)]);
-		this.glContext.bindTexture(this.glContext.TEXTURE_2D, this.fftTextureGenerator.frame.texture.texture_buffer);
+		this.glContext.bindTexture(this.glContext.TEXTURE_2D, this.fftTextureGenerator.fftResultFrame.texture.texture_buffer);
 		this.glContext.uniform1i(this.uniformLocation.orgTexture, textureUnit);
 		// ------------------------------------------
 	};
