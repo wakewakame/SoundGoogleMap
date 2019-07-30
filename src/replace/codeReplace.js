@@ -57,11 +57,25 @@ export const codeReplace = (responseText) => {
 	let shaderProgramName = glNameList[0].replace(/\w+\.\w+\[\w+\]\s*=\s*\w+\.\w+\.getUniformLocation\(\w+\.(\w+),\s*\w+\);/g, "$1");
 	// GoogleMapのソースコード書き換え
 	responseText = responseText.replace(
-		/(\w+\s*&&\s*\w+\.enableVertexAttribArray\(\w+\);)/g,
+		///(\w+\s*&&\s*\w+\.enableVertexAttribArray\(\w+\);)/g,
+		/(var\s+\w+\s*=\s*\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\);)/g,
 		"$1window.renderChange.setUniform(" + 
 		getGlWrapperFuncName + "(" + glWrapperName + ")." + glName + "," + 
 		getGlWrapperFuncName + "(" + glWrapperName + ")." + shaderProgramName + 
 		");"
+	);
+
+	// モデル行列を渡している部分を発見し、モデル行列の逆行列も渡すようにする
+	responseText = responseText.replace(
+		/(\w+)\.uniformMatrix4fv\((\w+),\s*!1,\s*(\w+)\)\s*\),/g,
+		"$1.uniformMatrix4fv($2,!1,$3)," +
+		"window.renderChange.setInvertUniform($3)),"
+	);
+
+	// GoogleMapが登録できる最大のテクスチャ枚数を1枚減らす(このプログラムがテクスチャを1枚登録できるように)
+	responseText = responseText.replace(
+		/Math\.min\(32,\s*(\w+)\.getParameter\(35661\)\);/g,
+		"Math.min(32,$1.getParameter(35661)-1);"
 	);
 	
 	return responseText;

@@ -45,6 +45,7 @@ export const FftTextureGenerator = class {
 			this.input_sample_rate = e.inputBuffer.sampleRate;
 
 			this.needUpdate = true;
+
 		}, this.inputWaveLength);
 	}
 	update() {
