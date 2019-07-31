@@ -57,11 +57,12 @@ export const codeReplace = (responseText) => {
 	// GoogleMapのソースコード書き換え
 	responseText = responseText.replace(
 		///(\w+\s*&&\s*\w+\.enableVertexAttribArray\(\w+\);)/g,
-		/(var\s+\w+\s*=\s*\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\);)/g,
-		"$1window.renderChange.setUniform(" + 
+		///(var\s+\w+\s*=\s*\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\)\s*,\s*\w+\s*=\s*\w+\.\w+\.\w+\.\w+\(\);)/g,
+		/([\w$]+\.[\w$]+\.isVisible\(\)\s*&&\s*\([\w$]+\s*=\s*[\w$]+\([\w$]+\.[\w$]+,\s*[\w$]+,\s*[\w$]+\),)/g,
+		"window.renderChange.setUniform(" + 
 		getGlWrapperFuncName + "(" + glWrapperName + ")." + glName + "," + 
 		getGlWrapperFuncName + "(" + glWrapperName + ")." + shaderProgramName + 
-		");"
+		");$1"
 	);
 
 	// モデル行列を渡している部分を発見し、モデル行列の逆行列も渡すようにする

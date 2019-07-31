@@ -81,6 +81,7 @@ export const RenderChange = class {
 		const textureUnit = this.MAX_COMBINED_TEXTURE_IMAGE_UNITS - 1;  // textureのunit番号
 		this.glContext.activeTexture(this.glContext["TEXTURE" + String(textureUnit)]);
 		this.glContext.bindTexture(this.glContext.TEXTURE_2D, this.fftTextureGenerator.fftResultFrame.texture.texture_buffer);
+		//this.glContext.bindTexture(this.glContext.TEXTURE_2D, this.fftTextureGenerator.inputWaveTexture.texture_buffer);
 		this.glContext.uniform1i(this.uniformLocation.orgTexture, textureUnit);
 		// ------------------------------------------
 	};

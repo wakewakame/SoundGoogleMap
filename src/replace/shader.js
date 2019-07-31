@@ -662,6 +662,7 @@ uniform sampler2D orgTexture;
 
 void main(){
 	vec3 La=texture2D(W,m).rgb;
+	/*
 	#ifdef _c
 	vec3 H=dot(n,n)>1e-6?normalize(n):vec3(0);
 	#endif
@@ -678,6 +679,7 @@ void main(){
 	vec3 Oa=Ob(r,X);
 	La=mix(La,Oa,Y);
 	#endif
+	*/
 	#ifdef _b
 	gl_FragColor=vec4(La,o);
 	#else
