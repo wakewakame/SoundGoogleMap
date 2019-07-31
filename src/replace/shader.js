@@ -80,6 +80,7 @@ void main() {
 		#endif
 
 		// --------------------------------------------------------------------
+		/*
 		float pi = acos(0.0) * 2.0;
 		float theta1 = atan(q.y, q.x) * 40000.0;
 		float theta2 = atan(q.z, sqrt(q.x * q.x + q.y * q.y)) * 40000.0;
@@ -88,6 +89,7 @@ void main() {
 		float vol = texture2D(orgTexture, vec2(pixIndex, 0.0)).r;
 		vec4 ua2 = vec4(ua.xyz * (1.0 + vol * 0.0001), ua.w);
 		ta = uInvert * ua2;
+		*/
 		// --------------------------------------------------------------------
 		
 		gl_Position=s*ta;

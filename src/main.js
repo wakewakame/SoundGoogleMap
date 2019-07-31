@@ -1,6 +1,6 @@
 import { codeReplace } from "./replace/codeReplace.js";
 
-_.vva = function(XHRWrapper) {
+_.yva = function(XHRWrapper) {
 	// jsのテキスト取得
 	let responseText = XHRWrapper.H ? XHRWrapper.H.responseText : "";
 
