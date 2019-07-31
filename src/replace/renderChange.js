@@ -66,6 +66,7 @@ export const RenderChange = class {
 			this.uniformLocation.orgTexture = this.glContext.getUniformLocation(this.shaderProgram, "orgTexture");
 			this.uniformLocation.uInvert = this.glContext.getUniformLocation(this.shaderProgram, "uInvert");
 		}
+
 		// シェーダに経過時間(秒)を送信
 		this.glContext.uniform1f(
 			this.uniformLocation.time,

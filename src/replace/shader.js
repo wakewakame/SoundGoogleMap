@@ -692,14 +692,11 @@ void main(){
 	float light = sin(theta1) * sin(theta2);
 	light = step(light, 0.0);
 
-	vec3 col1 = vec3(1.0) - gl_FragColor.rgb;
-	vec3 col2 = gl_FragColor.rgb;
-
-	vec3 col = col1 * light + col2 * (1.0 - light);
-
 	float pi = acos(0.0) * 2.0;
-	col = texture2D(orgTexture, vec2((atan(q.y, q.x) + pi) / (2.0 * pi), 0.0)).rgb;
-
+	vec3 col1 = gl_FragColor.rgb;
+	vec3 col2 = texture2D(orgTexture, vec2((atan(q.y, q.x) + pi) / (2.0 * pi), 0.0)).rgb;
+	vec3 col = col1 * light + col2 * (1.0 - light);
+	
 	gl_FragColor=vec4(col, gl_FragColor.a);
 	#endif
 	// ---------------------------

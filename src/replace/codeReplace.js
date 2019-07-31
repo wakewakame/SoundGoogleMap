@@ -22,16 +22,15 @@ export const codeReplace = (responseText) => {
 	// GoogleMapはアニメーションや頂点の更新がない限りはレンダリングを行わない。
 	// 任意のタイミングでレンダリングを行えるようにレンダリング関数のインスタンスをコピーする。
 	// まずはレンダリングを行う関数の関数名を取得する。
-	let renderFuncNameList = responseText.match(/render:function\(\){\w+\.\w+\(\)}/g);
+	let renderFuncNameList = responseText.match(/render:\s*function\(\)\s*{\s*\w+\.\w+\s*\(\)\s*}/g);
 	if (!renderFuncNameList || renderFuncNameList.length !== 1) return responseText;
-	let renderFuncName = renderFuncNameList[0].replace(/render:function\(\){\w+\.(\w+)\(\)}/g, "$1");
+	let renderFuncName = renderFuncNameList[0].replace(/render:\s*function\(\)\s*{\s*\w+\.(\w+)\s*\(\)\s*}/g, "$1");
 	// 次に、無条件でフレームレートがwindow.originalStruct.fpsでレンダリングされるように変更する。
 	responseText = responseText.replace(
 		/(this\.\w+)\s*=\s*(new\s+_\.\w+\(\w+,void\s+0,\w+\.\w+\(\)\));/g,
 		"$1=$2;" +
 		"setInterval(" +
 		"()=>{" +
-			"window.renderChange.update();" +
 			"if((new Date()).getTime()-window.renderChange.lastRenderTime>1000.0/window.renderChange.fps)$1." + renderFuncName + "();" +
 		"},1000.0/window.renderChange.fps);"
 	);
