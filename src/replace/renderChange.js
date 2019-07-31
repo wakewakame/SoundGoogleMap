@@ -74,6 +74,9 @@ export const RenderChange = class {
 		);
 
 		// ------------------------------------------
+		// FFTの実行
+		this.update();
+
 		// シェーダにテクスチャを送信
 		const textureUnit = this.MAX_COMBINED_TEXTURE_IMAGE_UNITS - 1;  // textureのunit番号
 		this.glContext.activeTexture(this.glContext["TEXTURE" + String(textureUnit)]);

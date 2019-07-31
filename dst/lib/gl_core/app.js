@@ -25,6 +25,15 @@ export const App = class {
         this.addEventListener("render", (event) => {
             this.gl.finish();
         });
+        // env data
+        this.env = {
+            use_program: null,
+            bind_framebuffer: null,
+            bind_arraybuffer: null,
+            bind_texture2d: null,
+            active_texture: null,
+            viewport: null,
+        };
     }
     render() {
         this.events.trigger("render", {});

@@ -49,6 +49,8 @@ export const FftTextureGenerator = class {
 		}, this.inputWaveLength);
 	}
 	update() {
+		this.app.saveEnv();
+
 		if (!this.input) return;
 		if (!this.needUpdate) return;
 		
@@ -92,6 +94,8 @@ export const FftTextureGenerator = class {
 		this.previewShader.set("audio1", this.cosConvFrame1.texture);
 		this.previewShader.set("audio2", this.sinConvFrame1.texture);
 		this.previewShader.filter(null, this.fftResultFrame);
+
+		this.app.loadEnv();
 
 		this.needUpdate = false;
 	}
