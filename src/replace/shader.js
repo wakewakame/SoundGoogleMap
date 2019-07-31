@@ -80,16 +80,14 @@ void main() {
 		#endif
 
 		// --------------------------------------------------------------------
-		/*
 		float pi = acos(0.0) * 2.0;
 		float theta1 = atan(q.y, q.x) * 40000.0;
 		float theta2 = atan(q.z, sqrt(q.x * q.x + q.y * q.y)) * 40000.0;
 		theta1 = (theta1 + pi) / (2.0 * pi);
 		float pixIndex = (theta1 - floor(theta1));
 		float vol = texture2D(orgTexture, vec2(pixIndex, 0.0)).r;
-		vec4 ua2 = vec4(ua.xyz * (1.0 + vol * 0.0001), ua.w);
+		vec4 ua2 = vec4(ua.xyz * (1.0 + vol * 0.000001), ua.w);
 		ta = uInvert * ua2;
-		*/
 		// --------------------------------------------------------------------
 		
 		gl_Position=s*ta;
@@ -658,7 +656,7 @@ uniform float Y;
 #endif
 
 uniform float time;
-uniform sampler2D orgTexture;
+//uniform sampler2D orgTexture;
 
 void main(){
 	vec3 La=texture2D(W,m).rgb;
@@ -688,6 +686,7 @@ void main(){
 
 
 	// ---------------------------
+	/*
 	#ifdef _a
 	float theta1 = atan(q.y, q.x) * 40000.0 + time * 1.0;
 	float theta2 = atan(q.z, sqrt(q.x * q.x + q.y * q.y)) * 40000.0;
@@ -701,6 +700,7 @@ void main(){
 	
 	gl_FragColor=vec4(col, gl_FragColor.a);
 	#endif
+	*/
 	// ---------------------------
 }
 `
