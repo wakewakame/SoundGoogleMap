@@ -16,7 +16,28 @@ export const RenderChange = class {
 			time: null,
 			orgTexture: null,
 			uInvert: null,
+
+			lot_lat_len: null,
+			marking: null,
 		};
+
+		/* param preset 1
+		renderChange.lot_lat_len_m = [35.709844, 139.810099, 0.1, 0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 3000;
+		*/
+
+		/* param preset 2
+		renderChange.lot_lat_len_m = [35.709844, 139.810099, 0.01, 0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 800;
+		*/
+
+		/* param preset 3
+		renderChange.lot_lat_len_m = [35.74785, 139.806010, 0.005, 0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 800;
+		*/
 
 		this.fftTextureGenerator = null;
 		this.MAX_COMBINED_TEXTURE_IMAGE_UNITS = null;
@@ -65,6 +86,9 @@ export const RenderChange = class {
 			this.uniformLocation.time = this.glContext.getUniformLocation(this.shaderProgram, "time");
 			this.uniformLocation.orgTexture = this.glContext.getUniformLocation(this.shaderProgram, "orgTexture");
 			this.uniformLocation.uInvert = this.glContext.getUniformLocation(this.shaderProgram, "uInvert");
+
+			this.uniformLocation.lot_lat_len = this.glContext.getUniformLocation(this.shaderProgram, "lot_lat_len");
+			this.uniformLocation.marking = this.glContext.getUniformLocation(this.shaderProgram, "marking");
 		}
 
 		// シェーダに経過時間(秒)を送信
@@ -72,6 +96,9 @@ export const RenderChange = class {
 			this.uniformLocation.time,
 			(this.lastRenderTime - this.firstRenderTime) / 1000.0
 		);
+
+		this.glContext.uniform3f(this.uniformLocation.lot_lat_len, this.lot_lat_len_m[0], this.lot_lat_len_m[1], this.lot_lat_len_m[2]);
+		this.glContext.uniform1i(this.uniformLocation.marking, this.lot_lat_len_m[3]);
 
 		// ------------------------------------------
 		// FFTの実行
