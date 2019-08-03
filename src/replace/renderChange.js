@@ -17,26 +17,71 @@ export const RenderChange = class {
 			orgTexture: null,
 			uInvert: null,
 
-			lot_lat_len: null,
+			lot_lat_len_h: null,
+			scale: null,
 			marking: null,
 		};
 
+		this.lot_lat_len_m_s_h = [35.689489, 139.691728, 0.01, 0, 1, 1.00001];
+
 		/* param preset 1
-		renderChange.lot_lat_len_m = [35.709844, 139.810099, 0.1, 0];
+		renderChange.lot_lat_len_m_s_h = [35.709844, 139.810099, 0.1, 0, 1, 0.0];
 		renderChange.fftTextureGenerator.hz1 = 200;
 		renderChange.fftTextureGenerator.hz2 = 3000;
 		*/
 
 		/* param preset 2
-		renderChange.lot_lat_len_m = [35.709844, 139.810099, 0.01, 0];
+		renderChange.lot_lat_len_m_s_h = [35.709844, 139.810099, 0.01, 0, 1, 0.0];
 		renderChange.fftTextureGenerator.hz1 = 200;
 		renderChange.fftTextureGenerator.hz2 = 800;
 		*/
 
 		/* param preset 3
-		renderChange.lot_lat_len_m = [35.74785, 139.806010, 0.005, 0];
+		renderChange.lot_lat_len_m_s_h = [35.74785, 139.806010, 0.005, 0, 1, 0.0];
 		renderChange.fftTextureGenerator.hz1 = 200;
 		renderChange.fftTextureGenerator.hz2 = 800;
+		*/
+
+		/* param preset 4
+		renderChange.lot_lat_len_m_s_h = [35.689489, 139.691728, 0.1, 0, 0.2, 1.000013];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 6000;
+		*/
+
+		/* param preset 5
+		renderChange.lot_lat_len_m_s_h = [35.698738, 139.76813, 0.01, 0, 1, 0.0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 800;
+		*/
+
+		/* param preset 6
+		renderChange.lot_lat_len_m_s_h = [35.659563, 139.699076, 0.01, 0, 1, 0.0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 800;
+		*/
+
+		/* param preset 7
+		renderChange.lot_lat_len_m_s_h = [35.658353, 139.74485, 0.01, 0, 1, 0.0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 800;
+		*/
+
+		/* param preset 8
+		renderChange.lot_lat_len_m_s_h = [48.87378, 2.29506, 0.01, 0, 1, 0.0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 800;
+		*/
+
+		/* param preset 9
+		renderChange.lot_lat_len_m_s_h = [40.689803, -74.044396, 0.00015, 0, 1, 0.0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 200;
+		*/
+
+		/* param preset 10
+		renderChange.lot_lat_len_m_s_h = [35.363571, 138.730380, 0.1, 0, 15, 0.0];
+		renderChange.fftTextureGenerator.hz1 = 200;
+		renderChange.fftTextureGenerator.hz2 = 600;
 		*/
 
 		this.fftTextureGenerator = null;
@@ -87,7 +132,8 @@ export const RenderChange = class {
 			this.uniformLocation.orgTexture = this.glContext.getUniformLocation(this.shaderProgram, "orgTexture");
 			this.uniformLocation.uInvert = this.glContext.getUniformLocation(this.shaderProgram, "uInvert");
 
-			this.uniformLocation.lot_lat_len = this.glContext.getUniformLocation(this.shaderProgram, "lot_lat_len");
+			this.uniformLocation.lot_lat_len_h = this.glContext.getUniformLocation(this.shaderProgram, "lot_lat_len_h");
+			this.uniformLocation.scale = this.glContext.getUniformLocation(this.shaderProgram, "scale");
 			this.uniformLocation.marking = this.glContext.getUniformLocation(this.shaderProgram, "marking");
 		}
 
@@ -97,8 +143,9 @@ export const RenderChange = class {
 			(this.lastRenderTime - this.firstRenderTime) / 1000.0
 		);
 
-		this.glContext.uniform3f(this.uniformLocation.lot_lat_len, this.lot_lat_len_m[0], this.lot_lat_len_m[1], this.lot_lat_len_m[2]);
-		this.glContext.uniform1i(this.uniformLocation.marking, this.lot_lat_len_m[3]);
+		this.glContext.uniform4f(this.uniformLocation.lot_lat_len_h, this.lot_lat_len_m_s_h[0], this.lot_lat_len_m_s_h[1], this.lot_lat_len_m_s_h[2], this.lot_lat_len_m_s_h[5]);
+		this.glContext.uniform1f(this.uniformLocation.scale, this.lot_lat_len_m_s_h[4]);
+		this.glContext.uniform1i(this.uniformLocation.marking, this.lot_lat_len_m_s_h[3]);
 
 		// ------------------------------------------
 		// FFTの実行

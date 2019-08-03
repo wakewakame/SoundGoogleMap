@@ -8,8 +8,8 @@ export const FftTextureGenerator = class {
 		this.app = new GlWrapper.App(glContext);
 
 		// fftの解析する周波数の範囲を指定
-		this.hz1 = 0.0;
-		this.hz2 = 3000.0;
+		this.hz1 = 200.0;
+		this.hz2 = 500.0;
 
 		// 入力波形のコピーを入れるテクスチャ
 		this.inputWaveLength = 1024;

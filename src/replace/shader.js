@@ -69,20 +69,21 @@ const vec3 ra=vec3(127);
 uniform float time;
 uniform sampler2D orgTexture;
 uniform mat4 uInvert;
-uniform vec3 lot_lat_len;
+uniform vec4 lot_lat_len_h;
+uniform float scale;
 
 #ifdef _a
-float getLen(vec3 pos, vec3 lll){
+float getLen(vec3 pos, vec4 lllh){
 	float pi = acos(0.0) * 2.0;
-	float lot = atan(pos.z, sqrt(pos.x * pos.x + pos.y * pos.y)) * 180.0 / pi - lll.x;
-	float lat = atan(pos.y, pos.x) * 180.0 / pi - lll.y;
+	float lot = atan(pos.z, sqrt(pos.x * pos.x + pos.y * pos.y)) * 180.0 / pi - lllh.x;
+	float lat = atan(pos.y, pos.x) * 180.0 / pi - lllh.y;
 	lot /= 180.0;
 	lot = 0.5 + (lot - floor(lot) - 0.5) * (1.0 + 2.0 * floor(0.5 * lot) - 2.0 * floor(0.5 + 0.5 * lot));
 	lot *= 180.0;
 	lat /= 180.0;
 	lat = 0.5 + (lat - floor(lat) - 0.5) * (1.0 + 2.0 * floor(0.5 * lat) - 2.0 * floor(0.5 + 0.5 * lat));
 	lat *= 180.0;
-	float len = sqrt(lat * lat + lot * lot) / lll.z;
+	float len = sqrt(lat * lat + lot * lot) / lllh.z;
 	return len;
 }
 #endif
@@ -107,9 +108,10 @@ void main() {
 		vec4 ua2 = vec4(ua.xyz * (1.0 + vol * 0.000001), ua.w);
 		ta = uInvert * ua2;
 		*/
-		float len = getLen(q, lot_lat_len);
-		float times = exp(-4.0 * len * len);
-		float vol = times * texture2D(orgTexture, vec2(len, 0.0)).r;
+		float len = getLen(q, lot_lat_len_h);
+		float times = exp(-1.0 * len * len);
+		float vol = 0.0;
+		if (length(q) > lot_lat_len_h.w) vol = times * texture2D(orgTexture, vec2(len, 0.0)).r * scale;
 		vec4 ua2 = vec4(ua.xyz * (1.0 + vol * 0.000001), ua.w);
 		ta = uInvert * ua2;
 		// --------------------------------------------------------------------
@@ -145,21 +147,22 @@ uniform sampler2D W;
 
 uniform float time;
 
-uniform vec3 lot_lat_len;
+uniform vec4 lot_lat_len_h;
 uniform int marking;
+uniform sampler2D orgTexture;
 
 #ifdef _a
 float getLen(){
 	float pi = acos(0.0) * 2.0;
-	float lot = atan(q.z, sqrt(q.x * q.x + q.y * q.y)) * 180.0 / pi - lot_lat_len.x;
-	float lat = atan(q.y, q.x) * 180.0 / pi - lot_lat_len.y;
+	float lot = atan(q.z, sqrt(q.x * q.x + q.y * q.y)) * 180.0 / pi - lot_lat_len_h.x;
+	float lat = atan(q.y, q.x) * 180.0 / pi - lot_lat_len_h.y;
 	lot /= 180.0;
 	lot = 0.5 + (lot - floor(lot) - 0.5) * (1.0 + 2.0 * floor(0.5 * lot) - 2.0 * floor(0.5 + 0.5 * lot));
 	lot *= 180.0;
 	lat /= 180.0;
 	lat = 0.5 + (lat - floor(lat) - 0.5) * (1.0 + 2.0 * floor(0.5 * lat) - 2.0 * floor(0.5 + 0.5 * lat));
 	lat *= 180.0;
-	float len = sqrt(lat * lat + lot * lot) / lot_lat_len.z;
+	float len = sqrt(lat * lat + lot * lot) / lot_lat_len_h.z;
 	return len;
 }
 #endif
@@ -173,11 +176,19 @@ void main(){
 	#endif
 
 	#ifdef _a
-	if ((marking == 1) && (getLen() < 1.0)) {
-		gl_FragColor.rgb += vec3(1.0, 0.0, 0.0);
+	if ((marking == 1) && (getLen() < 1.0) && length(q) > lot_lat_len_h.w) {
+		gl_FragColor.rgb += vec3(1.0, 0.0, 0.0) * 0.5;
 		gl_FragColor.rgb *= 0.5;
 	}
 	#endif
+
+	/*
+	float vol = texture2D(orgTexture, vec2(gl_FragCoord.x / 1920.0, 0.0)).r * 10.0;
+	if (gl_FragCoord.y < vol) {
+		gl_FragColor.rgb *= 0.5;
+		gl_FragColor.rgb += vec3(1.0, 1.0, 1.0) * 0.5;
+	}
+	*/
 }
 `
 };
