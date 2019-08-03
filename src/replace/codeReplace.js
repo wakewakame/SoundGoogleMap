@@ -20,19 +20,14 @@ export const codeReplace = (responseText) => {
 	);
 
 	// GoogleMapはアニメーションや頂点の更新がない限りはレンダリングを行わない。
-	// 任意のタイミングでレンダリングを行えるようにレンダリング関数のインスタンスをコピーする。
-	// まずはレンダリングを行う関数の関数名を取得する。
-	let renderFuncNameList = responseText.match(/render:\s*function\(\)\s*{\s*\w+\.\w+\s*\(\)\s*}/g);
-	if (!renderFuncNameList || renderFuncNameList.length !== 1) return responseText;
-	let renderFuncName = renderFuncNameList[0].replace(/render:\s*function\(\)\s*{\s*\w+\.(\w+)\s*\(\)\s*}/g, "$1");
-	// 次に、無条件でフレームレートがwindow.originalStruct.fpsでレンダリングされるように変更する。
+	// 再度レンダリングされるためのフラグを常にtrueに変更し、アニメーションが続くように変更。
 	responseText = responseText.replace(
-		/(this\.\w+)\s*=\s*(new\s+_\.\w+\(\w+,void\s+0,\w+\.\w+\(\)\));/g,
-		"$1=$2;" +
-		"setInterval(" +
-		"()=>{" +
-			"if((new Date()).getTime()-window.renderChange.lastRenderTime>1000.0/window.renderChange.fps)$1." + renderFuncName + "();" +
-		"},1000.0/window.renderChange.fps);"
+		/(this\.[\w$]+\(\)),\s*(this\.[\w$]+\s*=\s*[\w$]+)\);/g,
+		"$2);$1;"
+	);
+	responseText = responseText.replace(
+		/([\w$]+\.prototype\.[\w$]+\s*=\s*function\(\)\s*{\s*if\s*\()0\s*!=\s*this\.[\w$]+(\)\s*{)/g,
+		"$1true$2"
 	);
 
 	// glコンテキストのラッパーを取得する関数名を取得する

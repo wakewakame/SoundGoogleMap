@@ -37,9 +37,9 @@ export const RenderChange = class {
 		*/
 
 		/* param preset 3
-		renderChange.lot_lat_len_m_s_h = [35.74785, 139.806010, 0.005, 0, 1, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 800;
+		renderChange.lot_lat_len_m_s_h = [35.74795, 139.806010, 0.001, 0, 0.2, 1.000004];
+		renderChange.fftTextureGenerator.hz1 = 300;
+		renderChange.fftTextureGenerator.hz2 = 700;
 		*/
 
 		/* param preset 4
