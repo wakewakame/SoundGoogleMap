@@ -98,22 +98,18 @@ void main() {
 		#endif
 
 		// --------------------------------------------------------------------
-		/*
-		float pi = acos(0.0) * 2.0;
-		float theta1 = atan(q.y, q.x) * 40000.0;
-		float theta2 = atan(q.z, sqrt(q.x * q.x + q.y * q.y)) * 40000.0;
-		theta1 = (theta1 + pi) / (2.0 * pi);
-		float pixIndex = (theta1 - floor(theta1));
-		float vol = texture2D(orgTexture, vec2(pixIndex, 0.0)).r;
-		vec4 ua2 = vec4(ua.xyz * (1.0 + vol * 0.000001), ua.w);
-		ta = uInvert * ua2;
-		*/
 		float len = getLen(q, lot_lat_len_h);
 		float times = exp(-1.0 * len * len);
 		float vol = 0.0;
 		if (length(q) > lot_lat_len_h.w) vol = times * texture2D(orgTexture, vec2(len, 0.0)).r * scale;
+
+		vec4 upvec = uInvert * vec4(q.xyz, ua.w);
+		ta.xyz -= upvec.xyz * vol;
+
+		/*
 		vec4 ua2 = vec4(ua.xyz * (1.0 + vol * 0.000001), ua.w);
 		ta = uInvert * ua2;
+		*/
 		// --------------------------------------------------------------------
 		
 		gl_Position=s*ta;

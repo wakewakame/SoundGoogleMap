@@ -22,7 +22,7 @@ export const RenderChange = class {
 			marking: null,
 		};
 
-		this.lot_lat_len_m_s_h = [35.689489, 139.691728, 0.01, 0, 1, 1.00001];
+		this.lot_lat_len_m_s_h = [35.74795, 139.806010, 0.001, 0, 0.00002, 1.000004];
 
 		/* param preset 1
 		renderChange.lot_lat_len_m_s_h = [35.709844, 139.810099, 0.1, 0, 1, 0.0];
