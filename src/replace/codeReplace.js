@@ -70,7 +70,7 @@ export const codeReplace = (responseText) => {
 	// GoogleMapが登録できる最大のテクスチャ枚数を1枚減らす(このプログラムがテクスチャを1枚登録できるように)
 	responseText = responseText.replace(
 		/Math\.min\(32,\s*(\w+)\.getParameter\(35661\)\);/g,
-		"Math.min(32,$1.getParameter(35661)-1);"
+		"Math.min(32-1,$1.getParameter(35661)-1);"
 	);
 	
 	return responseText;
