@@ -8,9 +8,10 @@ for(let i in window._)
 		(window._[i].toString().search(/return/g) !== -1)
 	)
 	{
+		let funcName = window._[i].toString().match(/\.[\w$]+\s*\?/g, "$1")[0].replace(/\.([\w$])+\?/g, "$1");
 		window._[i] = function(XHRWrapper) {
 			// jsのテキスト取得
-			let responseText = XHRWrapper.H ? XHRWrapper.H.responseText : "";
+			let responseText = XHRWrapper[funcName] ? XHRWrapper[funcName].responseText : "";
 
 			// jsテキストを改変したものを返す
 			return codeReplace(responseText);
