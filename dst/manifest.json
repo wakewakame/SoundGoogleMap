@@ -1,0 +1,20 @@
+{
+	"manifest_version": 2,
+	"name": "GoogleMapChanger",
+	"version": "1",
+
+	"content_scripts": [
+		{
+			"matches": ["https://www.google.com/maps/*"],
+			"run_at": "document_end",
+			"js": ["content-script.js"]
+		}
+	],
+
+	"web_accessible_resources": [
+		"main.js"
+	],
+	"permissions": [
+		"<all_urls>"
+	]
+}
