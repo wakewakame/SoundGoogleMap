@@ -1,7 +1,13 @@
 {
 	"manifest_version": 2,
 	"name": "GoogleMapChanger",
+	"description": "you can change the shader of the Google Map with this tool.",
 	"version": "1",
+	"icons": {
+		"16": "icon/16.png",
+		"48": "icon/48.png",
+		"128": "icon/128.png"
+	},
 
 	"content_scripts": [
 		{
