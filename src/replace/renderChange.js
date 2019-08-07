@@ -96,7 +96,7 @@ export const RenderChange = class {
 		for(let i in beforeShaderList) {
 			if (source.indexOf(beforeShaderList[i]) !== -1) {
 				if (i in afterShaderList) {
-					source = source.replace(beforeShaderList[i], "");
+					source = source.match(/#define\s+[\w_$]+\s+[\w]+/g).join("\n");
 					source += afterShaderList[i];
 				}
 				return source;

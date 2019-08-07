@@ -6,5 +6,6 @@ module.exports = {
   output: {
     filename: 'main.js',
     path: path.join(__dirname, 'dst')
-  }
+  },
+  cache: true
 };
