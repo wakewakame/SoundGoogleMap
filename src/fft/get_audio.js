@@ -1,6 +1,6 @@
+let start = false;
+
 export const getAudio = (loopCallback, wavlen = 1024) => {
-	let start = false;
-	
 	document.addEventListener("click", (event) => {
 		if (start) return;
 		start = true;

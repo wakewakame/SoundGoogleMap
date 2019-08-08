@@ -1,10 +1,5 @@
-export const beforeShaderList = {
-0: "float sa=t[int(floor(F.w*255.+.5))];",
-1: "uniform sampler2D W;",
-};
-
-export const afterShaderList = {
-0: `
+export const shaderList = {
+"vertex": `
 varying vec2 m;
 #ifdef _a
 varying vec3 q;
@@ -83,9 +78,10 @@ void main() {
 		#endif
 	}
 	else gl_Position=vec4(0, 0, 0, 1);
+	gl_PointSize = 2.0;
 }
 `,
-1: `
+"fragment": `
 precision highp float;
 
 varying vec2 m;

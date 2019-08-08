@@ -1,4 +1,4 @@
-import { beforeShaderList, afterShaderList } from "./shader.js";
+import { shaderList } from "./shader.js";
 import { FftTextureGenerator } from "../fft/fft.js";
 
 export const RenderChange = class {
@@ -24,83 +24,20 @@ export const RenderChange = class {
 
 		this.lot_lat_len_m_s_h = [35.74795, 139.806010, 0.001, 0, 0.00002, 1.000004];
 
-		/* param preset 1  スカイツリー
-		renderChange.lot_lat_len_m_s_h = [35.709844, 139.810099, 0.1, 0, 1, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 3000;
-		*/
-
-		/* param preset 2  スカイツリー
-		renderChange.lot_lat_len_m_s_h = [35.709844, 139.810099, 0.01, 0, 1, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 800;
-		*/
-
-		/* param preset 3  電大
-		renderChange.lot_lat_len_m_s_h = [35.74795, 139.806010, 0.001, 0, 0.2, 1.000004];
-		renderChange.fftTextureGenerator.hz1 = 300;
-		renderChange.fftTextureGenerator.hz2 = 700;
-		*/
-
-		/* param preset 4  都庁
-		renderChange.lot_lat_len_m_s_h = [35.689489, 139.691728, 0.1, 0, 0.2, 1.000013];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 6000;
-		*/
-
-		/* param preset 5  お茶の水
-		renderChange.lot_lat_len_m_s_h = [35.698738, 139.76813, 0.01, 0, 1, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 800;
-		*/
-
-		/* param preset 6  109
-		renderChange.lot_lat_len_m_s_h = [35.659563, 139.699076, 0.01, 0, 1, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 800;
-		*/
-
-		/* param preset 7  東京タワー
-		renderChange.lot_lat_len_m_s_h = [35.658353, 139.74485, 0.01, 0, 1, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 800;
-		*/
-
-		/* param preset 8  フランスの凱旋門
-		renderChange.lot_lat_len_m_s_h = [48.87378, 2.29506, 0.01, 0, 1, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 800;
-		*/
-
-		/* param preset 9  自由の女神
-		renderChange.lot_lat_len_m_s_h = [40.689803, -74.044396, 0.00015, 0, 1, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 200;
-		*/
-
-		/* param preset 10  富士山
-		renderChange.lot_lat_len_m_s_h = [35.363571, 138.730380, 0.1, 0, 15, 0.0];
-		renderChange.fftTextureGenerator.hz1 = 200;
-		renderChange.fftTextureGenerator.hz2 = 600;
-		*/
-
 		this.fftTextureGenerator = null;
 		this.MAX_COMBINED_TEXTURE_IMAGE_UNITS = null;
 	}
 
-	// GoogleMapの全てのシェーダが渡される。
-	// 必要に応じてこの関数で書き換え、シェーダを返す。
+	// GoogleMapの全てのシェーダのソースコードが渡される。
+	// 建物の3D描画に使用しているシェーダのソースコードのみを書き換える。
 	shaderConverter(source) {
-		// 引数に渡されたシェーダのソースコードを読み、beforeShaderListに存在するソースコードと一致するか確認する。
-		// 一致した場合はbeforeShaderListに対応したafterShaderListのソースコードの文字列を返す
-		for(let i in beforeShaderList) {
-			if (source.indexOf(beforeShaderList[i]) !== -1) {
-				if (i in afterShaderList) {
-					source = source.match(/#define\s+[\w_$]+\s+[\w]+/g).join("\n");
-					source += afterShaderList[i];
-				}
-				return source;
-			}
+		if (source.indexOf("float sa=t[int(floor(F.w*255.+.5))];") !== -1) {
+			source = source.match(/#define\s+[\w_$]+\s+[\w]+/g).join("\n");
+			source += shaderList["vertex"];
+		}
+		if (source.indexOf("uniform sampler2D W;") !== -1) {
+			source = source.match(/#define\s+[\w_$]+\s+[\w]+/g).join("\n");
+			source += shaderList["fragment"];
 		}
 		return source;
 	}
@@ -155,7 +92,6 @@ export const RenderChange = class {
 		const textureUnit = Math.min(32 - 1,this.MAX_COMBINED_TEXTURE_IMAGE_UNITS - 1);  // textureのunit番号
 		this.glContext.activeTexture(this.glContext["TEXTURE" + String(textureUnit)]);
 		this.glContext.bindTexture(this.glContext.TEXTURE_2D, this.fftTextureGenerator.fftResultFrame.texture.texture_buffer);
-		//this.glContext.bindTexture(this.glContext.TEXTURE_2D, this.fftTextureGenerator.inputWaveTexture.texture_buffer);
 		this.glContext.uniform1i(this.uniformLocation.orgTexture, textureUnit);
 		// ------------------------------------------
 	};
