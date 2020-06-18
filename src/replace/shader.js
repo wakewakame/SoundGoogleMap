@@ -131,10 +131,6 @@ void main(){
 	#endif
 
 	float vol = texture2D(orgTexture, vec2(gl_FragCoord.x / 1920.0, 0.0)).r * 10.0;
-	if (gl_FragCoord.y < vol) {
-		gl_FragColor.rgb *= 0.5;
-		gl_FragColor.rgb += vec3(1.0, 1.0, 1.0) * 0.5;
-	}
 }
 `
 };

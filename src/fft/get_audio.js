@@ -1,7 +1,9 @@
 let start = false;
 
 export const getAudio = (loopCallback, wavlen = 1024) => {
+	alert("Click on the search box to enable the microphone.");
 	document.addEventListener("click", (event) => {
+		console.log("debug: The microphone is now enabled.");
 		if (start) return;
 		start = true;
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
