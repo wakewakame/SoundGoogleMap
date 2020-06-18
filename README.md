@@ -1,3 +1,5 @@
+![demo](https://github.com/wakewakame/SoundGoogleMap/blob/master/demo/demo.gif?raw=true)  
+
 # 用意するもの
 - Google Chrome
 
