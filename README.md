@@ -1,4 +1,4 @@
-![demo](https://github.com/wakewakame/SoundGoogleMap/blob/master/demo/demo.gif?raw=true)  
+![demo](demo/demo.gif)  
 
 **これは未完成のプログラムです**
 
