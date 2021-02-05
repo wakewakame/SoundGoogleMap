@@ -1,9 +1,18 @@
 ![demo](demo/demo.gif)  
+[https://youtu.be/0ZR4q2ALdIM](https://youtu.be/0ZR4q2ALdIM)  
 
 **これは未完成のプログラムです**
 
 # SoundGoogleMap
 マイクの音に合わせてGoogleMapの建物が踊ります。
+
+# 仕組み
+GoogleMapはjsファイルを`XMLHttpReqest`で取得し、そのテキストをjsとして実行しています。
+そのため、`XMLHttpRequest`でテキストデータを取得する関数をフックすることによりGoogleMapのプログラムを書き換えることが可能になります。
+今回はWebGLのシェーダを書き換えてみることにした。
+
+また、Google Mapのjavascriptは(多分)毎日変更され、その都度変数名が変わります。
+そのため、今回はソースコードを置き換えるのではなく、一部の文字列を正規表現で置換する手法を取りました。
 
 # 用意するもの
 - Google Chrome
@@ -25,14 +34,6 @@ npm install
 1. chromeで`chrome://extensions/`を開きます。
 2. `パッケージ化されていない拡張機能を読み込む`を押します。
 3. dstフォルダを選択します。
-
-# 仕組み
-GoogleMapはjsファイルを`XMLHttpReqest`で取得し、そのテキストをjsとして実行しています。
-そのため、`XMLHttpRequest`でテキストデータを取得する関数をフックすることによりGoogleMapのプログラムを書き換えることが可能になります。
-今回はWebGLのシェーダを書き換えてみることにした。
-
-また、Google Mapのjavascriptは(多分)毎日変更され、その都度変数名が変わります。
-そのため、今回はソースコードを置き換えるのではなく、一部の文字列を正規表現で置換する手法を取りました。
 
 # GoogleMapの改造内容
 ## 1. 常に60fpsでレンダリングされるようにする
